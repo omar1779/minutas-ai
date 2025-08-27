@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MVP – Actas y Minutas Automáticas
 
-## Getting Started
+> Versión inicial enfocada en estudiantes y grupos de trabajo académicos.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 0. Visión
+Transformar audios o transcripciones en **actas estructuradas** (título, asistentes, tareas, fechas) en segundos, sin pagar suites corporativas.
+
+---
+
+## 1. Alcance del MVP (Sprint de 5 días)
+
+| Día | Entregable principal | Detalles |
+|-----|---------------------|----------|
+| 1   | Esqueleto Next.js 14 + Auth Supabase | • Config TypeScript, Tailwind + Shadcn UI\n• Magic-link / GitHub auth\n• Rutas protegidas `/dashboard` |
+| 2   | API `/api/transcribe` (Whisper) | • Subida `mp3/mp4` (20 min máx)\n• Llama a Whisper API y devuelve texto |
+| 3   | API `/api/summary` (GPT-3.5) | • Prompt para resumen estructurado\n• Devuelve JSON (`title`, `attendees`, `points`, `tasks`) |
+| 4   | Editor Lexical + Export PDF | • Pre-carga resumen editable\n• Botones Copy / Download PDF |
+| 5   | Límites + Deploy Vercel | • 60 min audio/mes en plan Free\n• Variables env + pruebas con 3 betas |
+
+---
+
+## 2. Arquitectura
+
+```
+[Next.js App Router]
+    ├─ /upload  (React Dropzone)
+    │   └─ POST /api/transcribe —— Whisper (OpenAI)
+    ├─ /dashboard
+    │   └─ POST /api/summary —— OpenAI GPT-3.5 Turbo
+    ├─ /auth (Supabase)
+    └─ /db   (PostgreSQL @ Supabase – tablas: users, sessions, usage)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Tech Stack
+* **Frontend**: Next.js 14, React 18, Tailwind + Shadcn UI, Lexical Editor
+* **Backend**: Next.js API Routes (Edge Functions opc.), OpenAI Whisper & Chat
+* **DB/Auth**: Supabase (PostgreSQL + Auth)
+* **Infra**: Vercel (preview + prod)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 3. Costos estimados beta
+| Recurso | Precio | Límite beta |
+|---------|--------|-------------|
+| Whisper | 0.006 USD/min | 60 min/mes = 0.36 USD/user |
+| GPT-3.5 | 0.50 USD/1M tokens | 2 k tokens/reunión ≈ 0.001 USD |
+| Supabase | Free tier | 500 MB DB |
+| Vercel   | Hobby | Free |
 
-## Learn More
+Margen plan **Student 4 USD/mes** ≈ 55 %.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 4. Variables de entorno
+```
+SUPABASE_URL=…
+SUPABASE_ANON_KEY=…
+OPENAI_API_KEY=…
+WHISPER_MODEL=whisper-1
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 5. Setup local rápido
+```bash
+pnpm i  # o yarn / npm ci
+cp .env.example .env.local  # y definir keys
+pnpm dev
+```
+Abrir `http://localhost:3000` y registrarse con email mágico.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 6. Deployment
+1. Conectar repo a Vercel → Import Project.
+2. Añadir mismas variables de entorno.
+3. Seleccionar framework **Next.js** y Build Command `pnpm build`.
+
+---
+
+## 7. Backlog post-MVP
+* Soporte archivos `.wav`, `.m4a`.
+* Integración Zoom API → URL directa.
+* Historial de actas y búsqueda.
+* Compartir acta vía enlace público.
+* Rol “profesor” con export masivo.
+
+---
+
+_Última actualización: 2025-08-24_
