@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import ThemeToggle from './theme-toggle'
 
 const navigation = [
   { name: 'Proximamente', href: '#lista-espera' },
@@ -36,7 +35,7 @@ export default function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            onClick={() => setMobileMenuOpen(true)}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-400 dark:hover:text-white"
           >
             <span className="sr-only">Abrir menú principal</span>

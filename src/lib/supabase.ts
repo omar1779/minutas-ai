@@ -11,5 +11,5 @@ export interface WaitlistEmail {
   email: string
   source: string
   created_at?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
