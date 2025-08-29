@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { supabase } from '@/lib/supabase'
 
 export default function Waitlist() {
     const [email, setEmail] = useState('')
@@ -11,8 +12,33 @@ export default function Waitlist() {
         setStatus('loading')
         
         try {
-            // Aquí puedes integrar con tu servicio de email preferido
-            // Por ahora, simulamos el envío y guardamos en localStorage
+            // Guardar en Supabase
+            const { data, error } = await supabase
+                .from('waitlist_emails')
+                .insert([
+                    {
+                        email,
+                        source: 'landing-page',
+                        metadata: {
+                            timestamp: new Date().toISOString(),
+                            userAgent: navigator.userAgent,
+                            referrer: document.referrer || 'direct'
+                        }
+                    }
+                ])
+                .select()
+
+            if (error) {
+                // Si el email ya existe, mostrar mensaje personalizado
+                if (error.code === '23505') {
+                    setStatus('error')
+                    setMessage('Este email ya está registrado en nuestra lista.')
+                    return
+                }
+                throw error
+            }
+
+            // También guardamos en localStorage como backup
             const emails = JSON.parse(localStorage.getItem('waitlist-emails') || '[]')
             emails.push({
                 email,
@@ -25,10 +51,10 @@ export default function Waitlist() {
             setMessage('¡Gracias! Te avisaremos cuando esté listo.')
             setEmail('')
             
-            // También puedes enviar a tu backend aquí
-            console.log('Email capturado:', email)
+            console.log('Email guardado en Supabase:', data)
             
         } catch (error) {
+            console.error('Error al guardar email:', error)
             setStatus('error')
             setMessage('Hubo un error. Inténtalo de nuevo.')
         }

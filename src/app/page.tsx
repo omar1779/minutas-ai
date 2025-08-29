@@ -1,8 +1,10 @@
+'use client'
 import Header from "@/components/header";
 import Features from "@/components/features";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import Waitlist from "@/components/waitlist";
+
 export default function Home() {
   const timeline = [
     {
@@ -62,7 +64,14 @@ export default function Home() {
           />
         </div>
         <p className="text-sm/6 text-gray-900 dark:text-gray-100">
-          <a href="#" className="hover:text-gray-600 dark:hover:text-white">
+          <a 
+            href="#lista-espera" 
+            className="hover:text-gray-600 dark:hover:text-white scroll-smooth"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('lista-espera')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             <strong className="font-semibold">Beta privada</strong>
             <svg viewBox="0 0 2 2" aria-hidden="true" className="mx-2 inline size-0.5 fill-current">
               <circle r={1} cx={1} cy={1} />
@@ -92,7 +101,14 @@ export default function Home() {
                     <span className="text-2xl font-bold text-gray-900 dark:text-white">Actas AI</span>
                   </div> */}
                   <div className="mt-24 sm:mt-32 lg:mt-16">
-                    <a href="#" className="inline-flex space-x-6">
+                    <a 
+                      href="#lista-espera" 
+                      className="inline-flex space-x-6 scroll-smooth"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('lista-espera')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
                       <span className="rounded-full bg-brand-50 px-3 py-1 text-sm/6 font-semibold text-brand-600 ring-1 ring-brand-600/20 ring-inset dark:bg-brand-500/10 dark:text-brand-400 dark:ring-brand-500/25">
                         Beta privada
                       </span>
@@ -111,11 +127,22 @@ export default function Home() {
                   <div className="mt-10 flex items-center gap-x-6">
                     <a
                       href="#lista-espera"
-                      className="inline-flex items-center gap-2 rounded-md bg-brand-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 dark:bg-brand-500 dark:hover:bg-brand-400 dark:focus-visible:outline-brand-500"
+                      className="inline-flex items-center gap-2 rounded-md bg-brand-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 dark:bg-brand-500 dark:hover:bg-brand-400 dark:focus-visible:outline-brand-500 scroll-smooth"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('lista-espera')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
                     >
                       Acceder a la beta
                     </a>
-                    <a href="#" className="text-sm/6 font-semibold text-gray-900 dark:text-white">
+                    <a 
+                      href="#lista-espera" 
+                      className="text-sm/6 font-semibold text-gray-900 dark:text-white scroll-smooth"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('lista-espera')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
                       Ver demo <span aria-hidden="true">→</span>
                     </a>
                   </div>
