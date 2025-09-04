@@ -48,7 +48,7 @@ export default function Waitlist() {
             localStorage.setItem('waitlist-emails', JSON.stringify(emails))
             
             setStatus('success')
-            setMessage('¡Gracias! Te avisaremos cuando esté listo.')
+            setMessage('¡Perfecto! Eres uno de los 50 seleccionados. Te contactaremos pronto.')
             setEmail('')
             
             console.log('Email guardado en Supabase:', data)
@@ -65,20 +65,35 @@ export default function Waitlist() {
             <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32 dark:bg-gray-800 dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-0 dark:after:inset-ring dark:after:inset-ring-white/15 dark:after:sm:rounded-3xl">
                     <h2 className="mx-auto max-w-3xl text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                        Únete a la lista de espera
+                        Acceso gratuito por tiempo limitado
                     </h2>
                     <p className="mx-auto mt-6 max-w-lg text-center text-lg text-gray-300">
-                        Sé de los primeros en probar Actas AI y recibe minutos ilimitados durante la beta.
+                        <span className="text-yellow-400 font-semibold">Solo 50 lugares en la beta gratuita.</span> Sé de los primeros en probar Actas AI con minutos ilimitados.
                     </p>
                     
                     {status === 'success' ? (
                         <div className="mx-auto mt-10 max-w-md text-center">
                             <div className="rounded-md bg-green-500/10 p-4 ring-1 ring-green-500/20">
-                                <p className="text-green-400 font-medium">{message}</p>
+                                <div className="flex items-center justify-center mb-2">
+                                    <svg className="w-6 h-6 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <p className="text-green-400 font-medium">{message}</p>
+                                </div>
+                                <p className="text-green-300 text-sm">Revisa tu email en los próximos días.</p>
                             </div>
                         </div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="mx-auto mt-10 flex max-w-md gap-x-4">
+                        <div className="mx-auto mt-10 max-w-md">
+                            <div className="mb-4 text-center">
+                                <div className="inline-flex items-center gap-2 text-sm text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full">
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="font-medium">Quedan 37 lugares</span>
+                                </div>
+                            </div>
+                            <form onSubmit={handleSubmit} className="flex gap-x-4">
                             <label htmlFor="email-address" className="sr-only">
                                 Correo electrónico
                             </label>
@@ -97,11 +112,12 @@ export default function Waitlist() {
                             <button
                                 type="submit"
                                 disabled={status === 'loading'}
-                                className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex-none rounded-md bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {status === 'loading' ? 'Enviando...' : 'Avisarme'}
+                                {status === 'loading' ? 'Registrando...' : 'Acceder gratis'}
                             </button>
-                        </form>
+                            </form>
+                        </div>
                     )}
                     
                     {status === 'error' && (
